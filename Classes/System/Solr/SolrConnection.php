@@ -108,6 +108,11 @@ class SolrConnection
     protected $password = '';
 
     /**
+     * @var string
+     */
+    protected $domainForIndexing = '';
+
+    /**
      * @var SolrLogManager
      */
     protected $logger = null;
@@ -222,4 +227,27 @@ class SolrConnection
 
         return $service;
     }
+
+    /**
+     * Getter for domainForIndexing
+     *
+     * @return string
+     */
+    public function getDomainForIndexing()
+    {
+        return $this->domainForIndexing;
+    }
+
+    /**
+     * Setter for domainForIndexing
+     *
+     * @param string $domainForIndexing
+     *
+     * @return void
+     */
+    public function setDomainForIndexing($domainForIndexing)
+    {
+        $this->domainForIndexing = $domainForIndexing;
+    }
+
 }

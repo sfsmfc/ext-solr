@@ -515,10 +515,12 @@ class Indexer extends AbstractIndexer
         $translationConnections = $this->getConnectionsForIndexableLanguages($translationOverlays);
 
         if ($defaultLanguageUid == 0) {
+            $defaultConnection->setDomainForIndexing($solrConfigurationsBySite[0]['domainForIndexing']);
             $solrConnections[0] = $defaultConnection;
         }
 
         foreach ($translationConnections as $systemLanguageUid => $solrConnection) {
+            $solrConnection->setDomainForIndexing($solrConfigurationsBySite[$systemLanguageUid]['domainForIndexing']);
             $solrConnections[$systemLanguageUid] = $solrConnection;
         }
         return $solrConnections;

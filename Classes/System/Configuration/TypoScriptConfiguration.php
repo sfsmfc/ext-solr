@@ -1039,6 +1039,24 @@ class TypoScriptConfiguration
         return $this->renderContentElementOfConfigured($valuePath, $value);
     }
 
+
+    /**
+     * Returns the domain for indexing the content
+     *
+     * plugin.tx_solr.solr.domainForIndexing
+     *
+     * Applies stdWrap on the configured setting
+     *
+     * @param string $defaultIfEmpty
+     * @return string
+     */
+    public function getSolrDomainForIndexing($defaultIfEmpty = '')
+    {
+        $valuePath = 'plugin.tx_solr.solr.domainForIndexing';
+        $value = (string)$this->getValueByPathOrDefaultValue($valuePath, $defaultIfEmpty);
+        return $this->renderContentElementOfConfigured($valuePath, $value);
+    }
+
     /**
      * Retrieves the complete search configuration
      *

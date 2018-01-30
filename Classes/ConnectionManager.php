@@ -479,6 +479,7 @@ class ConnectionManager implements SingletonInterface, ClearCacheActionsHookInte
             'solrPath' => $configuration->getSolrPath(),
             'solrUsername' => $configuration->getSolrUsername(),
             'solrPassword' => $configuration->getSolrPassword(),
+            'domainForIndexing' => $configuration->getSolrDomainForIndexing(),
 
             'language' => $languageId
         ];

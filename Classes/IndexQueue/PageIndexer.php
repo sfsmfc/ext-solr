@@ -59,7 +59,7 @@ class PageIndexer extends Indexer
         $solrConnections = $this->getSolrConnectionsByItem($item);
         foreach ($solrConnections as $systemLanguageUid => $solrConnection) {
             $contentAccessGroups = $this->getAccessGroupsFromContent($item,
-                $systemLanguageUid);
+                $systemLanguageUid, $solrConnection->getDomainForIndexing());
 
             if (empty($contentAccessGroups)) {
                 // might be an empty page w/no content elements or some TYPO3 error / bug
@@ -147,9 +147,10 @@ class PageIndexer extends Indexer
      *
      * @param Item $item Index queue item representing the current page to get the user groups from
      * @param int $language The sys_language_uid language ID
+     * @param string $domainForIndexing The domain for do the request.
      * @return array Array of user group IDs
      */
-    protected function getAccessGroupsFromContent(Item $item, $language = 0)
+    protected function getAccessGroupsFromContent(Item $item, $language = 0, $domainForIndexing = '')
     {
         static $accessGroupsCache;
 
@@ -159,7 +160,7 @@ class PageIndexer extends Indexer
             $request->setIndexQueueItem($item);
             $request->addAction('findUserGroups');
 
-            $indexRequestUrl = $this->getDataUrl($item, $language);
+            $indexRequestUrl = $this->getDataUrl($item, $language, $domainForIndexing);
             $response = $request->send($indexRequestUrl);
 
             $groups = $response->getActionResult('findUserGroups');
@@ -227,13 +228,18 @@ class PageIndexer extends Indexer
      *
      * @param Item $item Item to index
      * @param int $language The language id
+     * @param string $domainForIndexing The domain for the request, if set
      * @return string URL to send the index request to
      * @throws \RuntimeException
      */
-    protected function getDataUrl(Item $item, $language = 0)
+    protected function getDataUrl(Item $item, $language = 0, $domainForIndexing)
     {
         $scheme = 'http';
-        $host = $item->getSite()->getDomain();
+        if (!empty($domainForIndexing)) {
+            $host = $domainForIndexing;
+        } else {
+            $host = $item->getSite()->getDomain();
+        }
         $path = '/';
         $pageId = $item->getRecordUid();
 
